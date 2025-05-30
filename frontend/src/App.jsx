@@ -11,7 +11,7 @@ import Products from './Components/Products.jsx';
 
 
 import './App.css'
-import Contact from './Components/Contact.jsX';
+import Contact from './Components/Contacts.jsx';
 
 function App() {
   const [count, setCount] = useState(0)
