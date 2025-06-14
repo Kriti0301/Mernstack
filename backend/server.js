@@ -7,8 +7,12 @@ dotenv.config(); // Load .env variables
 
 const app = express();
 app.use(cors({
-  origin: "https://prodmanager-backend.onrender.com"
+  origin: "https://prodmanager-backend.onrender.com",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true,
 }));
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 
