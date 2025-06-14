@@ -53,7 +53,7 @@ function Products() {
 
   const handleFormSubmit = (values) => {
     if (isEdit) {
-      dispatch(updateProduct(currentProduct.id, values));
+      dispatch(updateProduct(currentProduct._id, values));
     } else {
       dispatch(createProduct(values));
     }
@@ -74,7 +74,7 @@ function Products() {
         ) : (
           <Row>
             {(Array.isArray(products) ? products : []).map((prod) => (
-              <Col md={4} key={prod.id} className="mb-4">
+              <Col md={4} key={prod._id} className="mb-4">
                 <Card>
                   <div style={{ width: '100%', height: '200px', overflow: 'hidden' }}>
                     <img
@@ -98,7 +98,7 @@ function Products() {
                       />
                       <BsTrash
                         style={{ cursor: 'pointer', color: 'red' }}
-                        onClick={() => handleDelete(prod.id)}
+                        onClick={() => handleDelete(prod._id)}
                       />
                     </div>
                   </Card.Body>

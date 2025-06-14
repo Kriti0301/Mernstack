@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from './Components/Home.jsx';
 import Navbar from './Components/Navbar.jsx';
 import Products from './Components/Products.jsx';
+import RegisterPage from "./Components/RegisterPage";
 
 
 
@@ -23,7 +24,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<Products />} />
-        <Route path="/contact" element={<Contact />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/register" element={<RegisterPage />} />
         </Routes>
       </div>
     </Router>

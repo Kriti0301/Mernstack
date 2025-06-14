@@ -29,7 +29,7 @@ const ProductModalForm = ({
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={(values, { resetForm }) => {
-          handleSubmit(values);
+          handleSubmit(isEdit ? { ...values, id: initialValues._id } : values);
           resetForm();
           handleClose();
         }}

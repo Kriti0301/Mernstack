@@ -1,63 +1,60 @@
-// backend/routes/productRoutes.js
 const express = require("express");
 const router = express.Router();
-
-// In-memory product data (initially empty)
-let products = [];
+const Product = require("../models/Product");
 
 // GET all products
-router.get("/", (req, res) => {
-  res.status(200).json(products);
+router.get("/", async (req, res) => {
+  try {
+    const products = await Product.find({});
+    res.json(products);
+  } catch (err) {
+    res.status(500).json({ message: "Failed to fetch products" });
+  }
 });
 
-// GET product by ID
-router.get("/:id", (req, res) => {
-  const product = products.find((p) => p.id === parseInt(req.params.id));
-  if (!product) {
-    return res.status(404).json({ message: "Product not found" });
+// GET single product by ID
+router.get("/:id", async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
+    if (!product) return res.status(404).json({ message: "Product not found" });
+    res.json(product);
+  } catch (err) {
+    res.status(500).json({ message: "Failed to fetch product" });
   }
-  res.status(200).json(product);
 });
 
 // CREATE product
-router.post("/", (req, res) => {
-  const { title, image, description, price } = req.body;
-  if (!title || !image || !description || !price) {
-    return res.status(400).json({ message: "All fields are required" });
+router.post("/", async (req, res) => {
+  try {
+    const { title, image, description, price } = req.body;
+    const product = new Product({ title, image, description, price });
+    await product.save();
+    res.status(201).json(product);
+  } catch (err) {
+    res.status(400).json({ message: "Failed to create product" });
   }
-  const newProduct = {
-    id: products.length ? products[products.length - 1].id + 1 : 1,
-    title,
-    image,
-    description,
-    price: parseFloat(price),
-  };
-  products.push(newProduct);
-  res.status(201).json(newProduct);
 });
 
 // UPDATE product
-router.put("/:id", (req, res) => {
-  const product = products.find((p) => p.id === parseInt(req.params.id));
-  if (!product) {
-    return res.status(404).json({ message: "Product not found" });
+router.put("/:id", async (req, res) => {
+  try {
+    const updated = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!updated) return res.status(404).json({ message: "Product not found" });
+    res.json(updated);
+  } catch (err) {
+    res.status(400).json({ message: "Failed to update product" });
   }
-  const { title, image, description, price } = req.body;
-  product.title = title;
-  product.image = image;
-  product.description = description;
-  product.price = parseFloat(price);
-  res.status(200).json(product);
 });
 
 // DELETE product
-router.delete("/:id", (req, res) => {
-  const index = products.findIndex((p) => p.id === parseInt(req.params.id));
-  if (index === -1) {
-    return res.status(404).json({ message: "Product not found" });
+router.delete("/:id", async (req, res) => {
+  try {
+    const deleted = await Product.findByIdAndDelete(req.params.id);
+    if (!deleted) return res.status(404).json({ message: "Product not found" });
+    res.json({ message: "Product deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to delete product" });
   }
-  products.splice(index, 1);
-  res.status(200).json({ message: "Product deleted successfully" });
 });
 
 module.exports = router;

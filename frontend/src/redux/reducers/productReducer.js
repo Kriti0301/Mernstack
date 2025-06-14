@@ -38,7 +38,7 @@ export const productReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         products: state.products.map((p) =>
-          p.id === action.payload.id ? action.payload : p
+          p._id === action.payload._id ? action.payload : p
         ),
       };
     case UPDATE_PRODUCT_FAILURE:
@@ -51,7 +51,7 @@ export const productReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        products: state.products.filter((p) => p.id !== action.payload),
+        products: state.products.filter((p) => p._id !== action.payload),
       };
     case DELETE_PRODUCT_FAILURE:
       return { ...state, loading: false, error: action.payload };
