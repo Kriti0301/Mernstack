@@ -7,7 +7,7 @@ dotenv.config(); // Load .env variables
 
 const app = express();
 app.use(cors({
-  origin: "https://prodmanager-backend.onrender.com",
+  origin: "https://csci5709tutorials.netlify.app",
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
 }));
