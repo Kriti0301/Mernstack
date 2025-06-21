@@ -39,16 +39,25 @@ const RegisterPage = () => {
                 onSubmit={async (values, { resetForm }) => {
                     try {
                         const response = await axios.post("/api/users/register", values);
-                        toast.success(response.data.message || "Registration successful!");
+
+                        // Save JWT token to localStorage
+                        localStorage.setItem("token", response.data.token);
+
+                        toast.success("Registration successful!");
                         resetForm();
+
+
+                        window.location.href = "/login";
+
                     } catch (error) {
-                        if (error.response && error.response.data && error.response.data.message) {
+                        if (error.response && error.response.data?.message) {
                             toast.error(error.response.data.message);
                         } else {
                             toast.error("Something went wrong");
                         }
                     }
                 }}
+
 
             >
                 {({

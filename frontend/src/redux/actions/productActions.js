@@ -1,4 +1,3 @@
-// src/redux/actions/productActions.js
 import axios from "axios";
 import {
   CREATE_PRODUCT_REQUEST, CREATE_PRODUCT_SUCCESS, CREATE_PRODUCT_FAILURE,
@@ -8,11 +7,23 @@ import {
 } from "../types";
 import { toast } from "react-toastify";
 
+// Helper to attach token
+const getAuthHeader = () => {
+  const token = localStorage.getItem("token");
+  return { headers: { Authorization: `Bearer ${token}` } };
+};
+
 // Fetch All Products
 export const fetchProducts = () => async (dispatch) => {
   dispatch({ type: READ_PRODUCTS_REQUEST });
   try {
-    const response = await axios.get("/api/products");
+    const token = localStorage.getItem("token");
+
+    const query = new URLSearchParams(params).toString();
+    const response = await axios.get(`/api/products?${query}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
     dispatch({ type: READ_PRODUCTS_SUCCESS, payload: response.data });
   } catch (error) {
     dispatch({ type: READ_PRODUCTS_FAILURE, payload: error.message });
@@ -24,7 +35,7 @@ export const fetchProducts = () => async (dispatch) => {
 export const createProduct = (productData) => async (dispatch) => {
   dispatch({ type: CREATE_PRODUCT_REQUEST });
   try {
-    const response = await axios.post("/api/products", productData);
+    const response = await axios.post("/api/products", productData, getAuthHeader());
     dispatch({ type: CREATE_PRODUCT_SUCCESS, payload: response.data });
     toast.success("Product created successfully!");
   } catch (error) {
@@ -37,7 +48,7 @@ export const createProduct = (productData) => async (dispatch) => {
 export const updateProduct = (id, productData) => async (dispatch) => {
   dispatch({ type: UPDATE_PRODUCT_REQUEST });
   try {
-    const response = await axios.put(`/api/products/${id}`, productData);
+    const response = await axios.put(`/api/products/${id}`, productData, getAuthHeader());
     dispatch({ type: UPDATE_PRODUCT_SUCCESS, payload: response.data });
     toast.success("Product updated successfully!");
   } catch (error) {
@@ -50,7 +61,7 @@ export const updateProduct = (id, productData) => async (dispatch) => {
 export const deleteProduct = (id) => async (dispatch) => {
   dispatch({ type: DELETE_PRODUCT_REQUEST });
   try {
-    await axios.delete(`/api/products/${id}`);
+    await axios.delete(`/api/products/${id}`, getAuthHeader());
     dispatch({ type: DELETE_PRODUCT_SUCCESS, payload: id });
     toast.success("Product deleted successfully!");
   } catch (error) {

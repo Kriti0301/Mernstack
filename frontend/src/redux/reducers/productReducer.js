@@ -1,4 +1,3 @@
-// src/redux/reducers/productReducer.js
 import {
   CREATE_PRODUCT_REQUEST, CREATE_PRODUCT_SUCCESS, CREATE_PRODUCT_FAILURE,
   READ_PRODUCTS_REQUEST, READ_PRODUCTS_SUCCESS, READ_PRODUCTS_FAILURE,
@@ -7,7 +6,11 @@ import {
 } from "../types";
 
 const initialState = {
-  products: [],
+  products: {
+    products: [],
+    page: 1,
+    totalPages: 1,
+  },
   loading: false,
   error: null,
 };
@@ -18,7 +21,11 @@ export const productReducer = (state = initialState, action) => {
     case READ_PRODUCTS_REQUEST:
       return { ...state, loading: true };
     case READ_PRODUCTS_SUCCESS:
-      return { ...state, loading: false, products: action.payload };
+      return {
+        ...state,
+        loading: false,
+        products: action.payload, // { products: [], page, totalPages }
+      };
     case READ_PRODUCTS_FAILURE:
       return { ...state, loading: false, error: action.payload };
 
@@ -26,7 +33,14 @@ export const productReducer = (state = initialState, action) => {
     case CREATE_PRODUCT_REQUEST:
       return { ...state, loading: true };
     case CREATE_PRODUCT_SUCCESS:
-      return { ...state, loading: false, products: [...state.products, action.payload] };
+      return {
+        ...state,
+        loading: false,
+        products: {
+          ...state.products,
+          products: [...state.products.products, action.payload],
+        },
+      };
     case CREATE_PRODUCT_FAILURE:
       return { ...state, loading: false, error: action.payload };
 
@@ -37,9 +51,12 @@ export const productReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        products: state.products.map((p) =>
-          p._id === action.payload._id ? action.payload : p
-        ),
+        products: {
+          ...state.products,
+          products: state.products.products.map((p) =>
+            p._id === action.payload._id ? action.payload : p
+          ),
+        },
       };
     case UPDATE_PRODUCT_FAILURE:
       return { ...state, loading: false, error: action.payload };
@@ -51,7 +68,10 @@ export const productReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        products: state.products.filter((p) => p._id !== action.payload),
+        products: {
+          ...state.products,
+          products: state.products.products.filter((p) => p._id !== action.payload),
+        },
       };
     case DELETE_PRODUCT_FAILURE:
       return { ...state, loading: false, error: action.payload };

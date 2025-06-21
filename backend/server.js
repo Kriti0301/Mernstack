@@ -6,13 +6,23 @@ const dotenv = require("dotenv");
 dotenv.config(); // Load .env variables
 
 const app = express();
-app.use(cors({
-  origin: "https://csci5709tutorials.netlify.app",
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://csci5709tutorials.netlify.app"
+];
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
-}));
-
-// app.use(cors(corsOptions));
+};
+app.use(cors(corsOptions));
 app.use(express.json());
 
 

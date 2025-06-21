@@ -8,6 +8,7 @@ import Home from './Components/Home.jsx';
 import Navbar from './Components/Navbar.jsx';
 import Products from './Components/Products.jsx';
 import RegisterPage from "./Components/RegisterPage";
+import LoginPage from "./Components/LoginPage";
 
 
 
@@ -26,6 +27,7 @@ function App() {
           <Route path="/products" element={<Products />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/login" element={<LoginPage />} />
         </Routes>
       </div>
     </Router>
