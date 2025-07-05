@@ -7,8 +7,8 @@ import store from "./redux/store";
 
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
-// axios.defaults.baseURL = "https://prodmanager-backend.onrender.com";
-axios.defaults.baseURL = "http://localhost:5000"; 
+axios.defaults.baseURL = "https://prodmanager-backend.onrender.com";
+//axios.defaults.baseURL = "http://localhost:5000"; 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <App />
