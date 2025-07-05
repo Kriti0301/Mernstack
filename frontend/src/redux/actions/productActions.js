@@ -14,14 +14,17 @@ const getAuthHeader = () => {
 };
 
 // Fetch All Products
-export const fetchProducts = () => async (dispatch) => {
+export const fetchProducts = (params = {}) => async (dispatch) => {
   dispatch({ type: READ_PRODUCTS_REQUEST });
+
   try {
     const token = localStorage.getItem("token");
 
     const query = new URLSearchParams(params).toString();
     const response = await axios.get(`/api/products?${query}`, {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
 
     dispatch({ type: READ_PRODUCTS_SUCCESS, payload: response.data });
@@ -30,6 +33,7 @@ export const fetchProducts = () => async (dispatch) => {
     toast.error("Failed to fetch products!");
   }
 };
+
 
 // Create Product
 export const createProduct = (productData) => async (dispatch) => {

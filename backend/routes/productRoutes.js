@@ -6,10 +6,33 @@ const auth = require("../middleware/auth");
 // GET all products
 router.get("/",auth,  async (req, res) => {
   try {
-    const products = await Product.find({});
-    res.json(products);
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 6;
+    const keyword = req.query.keyword || "";
+    const sort = req.query.sort || "createdAt"; // default to newest first
+
+    const searchFilter = {
+      $or: [
+        { title: { $regex: keyword, $options: "i" } },
+        { description: { $regex: keyword, $options: "i" } }
+      ]
+    };
+
+    const total = await Product.countDocuments(searchFilter);
+
+    const products = await Product.find(searchFilter)
+      .sort(sort)
+      .skip((page - 1) * limit)
+      .limit(limit);
+
+    res.status(200).json({
+      products,
+      page,
+      totalPages: Math.ceil(total / limit),
+    });
   } catch (err) {
-    res.status(500).json({ message: "Failed to fetch products" });
+    console.error("Product fetch error:", err);
+    res.status(500).json({ message: "Server error" });
   }
 });
 

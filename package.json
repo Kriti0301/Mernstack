@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "express-validator": "^7.2.1",
     "formik": "^2.4.6",
     "react-redux": "^9.2.0",
     "react-toastify": "^11.0.5",
