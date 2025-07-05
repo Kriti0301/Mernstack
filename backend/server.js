@@ -9,7 +9,8 @@ const app = express();
 
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://csci5709tutorials.netlify.app"
+  "https://csci5709tutorials.netlify.app",
+  "https://majestic-valkyrie-7a2617.netlify.app"
 ];
 const corsOptions = {
   origin: function (origin, callback) {
