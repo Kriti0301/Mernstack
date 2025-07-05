@@ -12,7 +12,7 @@ import ProductModalForm from "./ProductModalForm";
 function Products() {
   const dispatch = useDispatch();
   const { products, loading } = useSelector((state) => state.productState);
-  console.log("Redux products state:", products);
+  //console.log("Redux products state:", products);
   // Extract nested list safely
   const productList = Array.isArray(products?.products) ? products.products : [];
 

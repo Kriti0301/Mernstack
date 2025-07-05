@@ -38,7 +38,7 @@ const RegisterPage = () => {
                 validationSchema={validationSchema}
                 onSubmit={async (values, { resetForm }) => {
                     try {
-                        const response = await axios.post("/api/users/register", values);
+                        const response = await axios.post("/api/auth/register", values);
 
                         // Save JWT token to localStorage
                         localStorage.setItem("token", response.data.token);

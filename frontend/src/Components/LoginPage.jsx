@@ -21,7 +21,7 @@ const LoginPage = () => {
         validationSchema={validationSchema}
         onSubmit={async (values, { resetForm }) => {
           try {
-            const response = await axios.post("/api/users/login", values);
+            const response = await axios.post("/api/auth/login", values);
 
             // Save token
             localStorage.setItem("token", response.data.token);
